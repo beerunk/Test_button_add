@@ -4,14 +4,14 @@ from selenium.webdriver.chrome.options import Options
 
 
 def pytest_addoption(parser):
-    parser.addoption('--user_language', action='store', default = "ru",
+    parser.addoption('--language', action='store', default = "ru",
                      help="Choose language: es or fr")
     parser.addoption('--browser_name', action='store', default='chrome',
                      help="Choose browser: chrome or firefox")
 
 @pytest.fixture(scope="function")
 def browser(request):
-    language = request.config.getoption("user_language")
+    language = request.config.getoption("language")
     browser = request.config.getoption("browser_name")
     #browser = None
     if browser == "chrome":
@@ -25,7 +25,7 @@ def browser(request):
         fp.set_preference("intl.accept_languages", language)
         browser = webdriver.Firefox(firefox_profile=fp)
     else:
-        raise pytest.UsageError("--user_language should be es or fr")
+        raise pytest.UsageError("--language should be es or fr")
     yield browser
     print("\nquit browser..")
     browser.quit()
